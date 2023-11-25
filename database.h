@@ -8,8 +8,10 @@ class Product{
 
     public:
 
-        Product(string myNum = "Null", string myName = "Null", string myDescription = "Null", string myPrice = "Null"){
+        //constructor
+        Product(string myType = "Null", string myNum = "Null", string myName = "Null", string myDescription = "Null", string myPrice = "Null"){
 
+            itemType = myType;
             itemNum = myNum;
             itemName = myName;
             itemDescription = myDescription;
@@ -17,15 +19,18 @@ class Product{
 
         }
 
+        //this function returns a string vector containing the values of the data members of the product object, in the order they appear in the constructor
         const vector<string> makeDataVector(){
 
-            vector<string> myVector = {itemNum, itemName, itemDescription, price};
+            vector<string> myVector = {itemType, itemNum, itemName, itemDescription, price};
             return myVector;
 
         }
 
     private:
 
+        //these are the data members of the product class
+        string itemType;
         string itemNum;
         string itemName;
         string itemDescription;
@@ -43,10 +48,56 @@ class Product{
 class Database {
 
     public:
+
+    //constructor, takes in the name of the database text file
+    Database(string myFileName){
+
+        fileName = myFileName;
+
+        //initializez numOfLines as the size of a string vector that contains all the lines of the file.
+        numOfLines = 0;
+        vector<string> fileVector = turnFileIntoStringVector();
+
+        for(string line : fileVector){
+
+            if(line == "^"){
+
+                numOfLines++;
+
+            }
+
+        }
+
+        
+ 
+    }
+
+    //returns a string vector that contains all the lines of the file
+    const vector<string> turnFileIntoStringVector(){
+
+        ifstream file(fileName);
+        string line;
+        vector<string> linesVector = {};
+
+        while(getline(file, line)){
+
+            linesVector.push_back(line);
+
+        }
+        
+        file.close();
+
+        return linesVector;
+
     
-    static const void appendProductToFile(Product myProduct){
+    }
+    
+    //appends a product object to the end of the file, a '^' marks the start of an object and a '&' marks the end
+    const void append(Product myProduct){
+
+
         vector<string> productDataVector = myProduct.makeDataVector();
-        ofstream file("product_database.txt", ios::app);
+        ofstream file(fileName, ios::app);
 
         file << "^\n";
         for (string dataMember : productDataVector){
@@ -57,23 +108,84 @@ class Database {
         file << "&\n";
         file.close();
 
+        numOfLines++;
+
 
     }
 
-    static const void clearDatabase(){
 
-        ofstream file("product_database.txt");
+
+
+    //removes the last product object from the database file by finding the second to last & and rewriting the file to omit everything after it
+    const void removeLast(){
+
+        vector<string> linesVector = turnFileIntoStringVector();
+
+        int ampersandDecrementor = numOfLines;
+        int lineIncrementor = 0;
+        vector<string> newLinesVector = {};
+
+
+
+        if (numOfLines > 1){
+
+            while (ampersandDecrementor > 1){
+
+                if( linesVector[lineIncrementor] == "&"){
+
+                    ampersandDecrementor--;
+
+                }
+
+                newLinesVector.push_back(linesVector[lineIncrementor]);
+                lineIncrementor++;
+
+                
+
+
+            } 
+
+            ofstream file(fileName);
+
+            for(string line : newLinesVector){
+
+                file << line;
+                file << "\n";
+
+            }
+
+            file.close();
+            numOfLines--;
+
+        }else{
+
+            clearDatabase();
+            
+
+        }
+
+
+    }
+
+    //clears the file
+    const void clearDatabase(){
+
+        ofstream file(fileName);
 
         file << "";
 
         file.close();
+
+        numOfLines = 0;
 
     }
 
 
 
     private: 
-        int numOfItems;
+        string fileName;
+        int numOfLines;
+
 
 
 
