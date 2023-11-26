@@ -1,6 +1,21 @@
 ^
-123
+food
+001
 cake
-A slice of cake.
+a slice of cake
 $4.99
+&
+^
+food
+002
+cereal
+a box of cereal
+$4.00
+&
+^
+technology
+003
+tv
+a television
+$500.00
 &
