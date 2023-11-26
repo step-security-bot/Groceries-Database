@@ -1,3 +1,4 @@
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -26,6 +27,20 @@ class Product{
             return myVector;
 
         }
+
+        //prints out the data members of the product, for debugging purposes
+        const void print(){
+
+            vector<string> myStringVector = makeDataVector();
+
+            for(string myString : myStringVector){
+
+                cout << myString << endl;
+
+            }
+
+        }
+
 
     private:
 
@@ -70,6 +85,51 @@ class Database {
 
         
  
+    }
+
+
+    //takes a file and turn the data in it into a vector of products
+    const vector<Product> turnFileIntoProductVector(){
+
+        vector<string> linesVector = turnFileIntoStringVector();
+        vector<Product> productVector = {};
+
+
+        int i = 0;
+        for(string line : linesVector){
+
+            if(line == "^"){
+
+                Product myProduct(linesVector[i + 1], linesVector[i + 2], linesVector[i+3], linesVector[i+4], linesVector[i+5]);
+                productVector.push_back(myProduct);
+
+
+            }
+
+            i++;
+
+        }
+
+        return productVector;
+
+    }
+
+
+    //takes in a product vector and replaces whatever was in the file with the data from the product vector
+    const void turnProductVectorIntoFile(vector<Product> myProductVector){
+
+        clearDatabase();
+
+        for(Product myProduct : myProductVector){
+
+            append(myProduct);
+
+        }
+
+
+
+
+
     }
 
     //returns a string vector that contains all the lines of the file
