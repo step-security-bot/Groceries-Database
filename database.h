@@ -41,6 +41,20 @@ class Product{
 
         }
 
+        //returns the price of a product as a float
+        const float getPriceAsFloat(){
+            
+            //stof() converts a string to a float
+            return stof(price);
+
+        }
+
+        const string getType(){
+
+            return itemType;
+
+        }
+
 
     private:
 
@@ -69,15 +83,15 @@ class Database {
 
         fileName = myFileName;
 
-        //initializez numOfLines as the size of a string vector that contains all the lines of the file.
-        numOfLines = 0;
+        //initializez numOfProducts as the size of a string vector that contains all the lines of the file.
+        numOfProducts = 0;
         vector<string> fileVector = turnFileIntoStringVector();
 
         for(string line : fileVector){
 
             if(line == "^"){
 
-                numOfLines++;
+                numOfProducts++;
 
             }
 
@@ -168,7 +182,7 @@ class Database {
         file << "&\n";
         file.close();
 
-        numOfLines++;
+        numOfProducts++;
 
 
     }
@@ -181,13 +195,13 @@ class Database {
 
         vector<string> linesVector = turnFileIntoStringVector();
 
-        int ampersandDecrementor = numOfLines;
+        int ampersandDecrementor = numOfProducts;
         int lineIncrementor = 0;
         vector<string> newLinesVector = {};
 
 
 
-        if (numOfLines > 1){
+        if (numOfProducts > 1){
 
             while (ampersandDecrementor > 1){
 
@@ -215,7 +229,7 @@ class Database {
             }
 
             file.close();
-            numOfLines--;
+            numOfProducts--;
 
         }else{
 
@@ -236,15 +250,130 @@ class Database {
 
         file.close();
 
-        numOfLines = 0;
+        numOfProducts = 0;
 
     }
+
+
+    //uses a bubble sorting algorythm to sort products by price from low to high
+    const void sortByPrice(){
+
+        
+        vector<Product> myProductVector = turnFileIntoProductVector();
+
+        bool sorting = true;
+        int numOfSwaps;
+        Product placeholder;
+
+        while(sorting){
+
+                numOfSwaps = 0;
+                
+
+                for(int i = 0; i < myProductVector.size()-1; i++){
+
+                    if (myProductVector[i].getPriceAsFloat() > myProductVector[i+1].getPriceAsFloat()){
+
+                        placeholder = myProductVector[i];
+                        myProductVector[i] = myProductVector[i+1];
+                        myProductVector[i+1] = placeholder;
+
+                        numOfSwaps++;
+
+                    
+                    }
+
+                    
+                            
+                }
+
+
+                if(numOfSwaps == 0){
+                    
+                    sorting = false;
+
+                }
+
+
+
+                
+                
+            }
+                    
+
+            
+            turnProductVectorIntoFile(myProductVector);
+            
+
+           
+
+        }
+
+
+
+        //uses a bubble sorting algorythm to sort products by type in alphabetical order
+        const void sortByType(){
+
+        
+        vector<Product> myProductVector = turnFileIntoProductVector();
+
+        bool sorting = true;
+        int numOfSwaps;
+        Product placeholder;
+
+        while(sorting){
+
+                numOfSwaps = 0;
+                
+
+                for(int i = 0; i < myProductVector.size()-1; i++){
+
+                    if (myProductVector[i].getType() > myProductVector[i+1].getType()){
+
+                        placeholder = myProductVector[i];
+                        myProductVector[i] = myProductVector[i+1];
+                        myProductVector[i+1] = placeholder;
+
+                        numOfSwaps++;
+
+                    
+                    }
+
+                    
+                            
+                }
+
+
+                if(numOfSwaps == 0){
+                    
+                    sorting = false;
+
+                }
+
+
+
+                
+                
+            }
+                    
+
+            
+            turnProductVectorIntoFile(myProductVector);
+            
+
+           
+
+        }
+        
+
+
+    
 
 
 
     private: 
         string fileName;
-        int numOfLines;
+        int numOfProducts;
 
 
 
