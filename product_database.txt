@@ -3,19 +3,40 @@ food
 001
 cake
 a slice of cake
-$4.99
+4.99
 &
 ^
 food
 002
 cereal
 a box of cereal
-$4.00
+4.00
+&
+^
+food
+006
+apple slices
+sliced apples
+2.00
+&
+^
+pet supplies
+004
+dog food
+food for dogs
+20.00
+&
+^
+pet supplies
+005
+cat food
+food for cats
+25.00
 &
 ^
 technology
 003
 tv
 a television
-$500.00
+500.00
 &
