@@ -56,6 +56,7 @@ class Product{
         }
 
 
+
     private:
 
         //these are the data members of the product class
@@ -139,6 +140,8 @@ class Database {
             append(myProduct);
 
         }
+
+        numOfProducts = myProductVector.size();
 
 
 
@@ -362,6 +365,32 @@ class Database {
             
 
            
+
+        }
+
+
+
+        const Database makeNewFileOfProductsWithTheSameType(string newfilename, string type){
+
+            vector<Product> myProductVector = turnFileIntoProductVector();
+            vector<Product> vectorOfSameTypes = {};
+        
+            for(Product myProduct : myProductVector){
+
+                if(myProduct.getType() == type){
+
+                    vectorOfSameTypes.push_back(myProduct);
+
+                }
+        
+
+            }
+
+            Database myNewDatabase(newfilename);
+            myNewDatabase.turnProductVectorIntoFile(vectorOfSameTypes);
+
+            return myNewDatabase;
+
 
         }
         
