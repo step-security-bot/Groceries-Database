@@ -14,13 +14,12 @@ int main(){
     Product catFood("pet supplies", "005", "cat food", "food for cats", "25.00");
     
 
-    vector<Product> myProductVector = {tv, cake, cereal, dogFood, appleSlices, catFood};
+   vector<Product> myProductVector = {tv, cake, cereal, dogFood, appleSlices, catFood};
 
     myDatabase.turnProductVectorIntoFile(myProductVector);
 
-    myDatabase.sortByType();
+    Database myNewDatabase = myDatabase.makeNewFileOfProductsWithTheSameType("product_database.txt", "food");
 
-    
     return 0;
 
 }
