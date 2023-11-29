@@ -19,24 +19,3 @@ apple slices
 sliced apples
 2.00
 &
-^
-pet supplies
-004
-dog food
-food for dogs
-20.00
-&
-^
-pet supplies
-005
-cat food
-food for cats
-25.00
-&
-^
-technology
-003
-tv
-a television
-500.00
-&
