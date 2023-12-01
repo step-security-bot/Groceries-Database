@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <limits>
+#include <algorithm>
 
 using namespace std;
 
@@ -21,7 +23,7 @@ class Product{
         }
 
         //this function returns a string vector containing the values of the data members of the product object, in the order they appear in the constructor
-        const vector<string> makeDataVector(){
+         vector<string> makeDataVector() const {
 
             vector<string> myVector = {itemType, itemNum, itemName, itemDescription, price};
             return myVector;
@@ -29,7 +31,7 @@ class Product{
         }
 
         //prints out the data members of the product, for debugging purposes
-        const void print(){
+         void print() const{
 
             vector<string> myStringVector = makeDataVector();
 
@@ -41,21 +43,28 @@ class Product{
 
         }
 
+        const string getItemNum() const {
+            return itemNum;
+        }
+
         //returns the price of a product as a float
-        const float getPriceAsFloat(){
-            
+        const float getPriceAsFloat() {
+
             //stof() converts a string to a float
             return stof(price);
 
         }
 
-        const string getType(){
+        const string getType() {
 
             return itemType;
 
         }
 
-
+        void setPrice(const string& newPrice) 
+        {
+            price = newPrice;
+        }
 
     private:
 
@@ -65,15 +74,7 @@ class Product{
         string itemName;
         string itemDescription;
         string price;
-
-
-
-
-
 };
-
-
-
 
 class Database {
 
@@ -84,24 +85,19 @@ class Database {
 
         fileName = myFileName;
 
-        //initializez numOfProducts as the size of a string vector that contains all the lines of the file.
+        //initializez numOfLines as the size of a string vector that contains all the lines of the file.
         numOfProducts = 0;
         vector<string> fileVector = turnFileIntoStringVector();
 
-        for(string line : fileVector){
+        for (string line : fileVector) {
 
-            if(line == "^"){
+            if (line == "^") {
 
                 numOfProducts++;
 
             }
-
         }
-
-        
- 
     }
-
 
     //takes a file and turn the data in it into a vector of products
     const vector<Product> turnFileIntoProductVector(){
@@ -129,7 +125,6 @@ class Database {
 
     }
 
-
     //takes in a product vector and replaces whatever was in the file with the data from the product vector
     const void turnProductVectorIntoFile(vector<Product> myProductVector){
 
@@ -140,13 +135,6 @@ class Database {
             append(myProduct);
 
         }
-
-        numOfProducts = myProductVector.size();
-
-
-
-
-
     }
 
     //returns a string vector that contains all the lines of the file
@@ -189,9 +177,6 @@ class Database {
 
 
     }
-
-
-
 
     //removes the last product object from the database file by finding the second to last & and rewriting the file to omit everything after it
     const void removeLast(){
@@ -257,132 +242,300 @@ class Database {
 
     }
 
-
     //uses a bubble sorting algorythm to sort products by price from low to high
-    const void sortByPrice(){
+    const void sortByPrice() {
 
-        
+
         vector<Product> myProductVector = turnFileIntoProductVector();
 
         bool sorting = true;
         int numOfSwaps;
         Product placeholder;
 
-        while(sorting){
+        while (sorting) {
 
-                numOfSwaps = 0;
-                
-
-                for(int i = 0; i < myProductVector.size()-1; i++){
-
-                    if (myProductVector[i].getPriceAsFloat() > myProductVector[i+1].getPriceAsFloat()){
-
-                        placeholder = myProductVector[i];
-                        myProductVector[i] = myProductVector[i+1];
-                        myProductVector[i+1] = placeholder;
-
-                        numOfSwaps++;
-
-                    
-                    }
-
-                    
-                            
-                }
+            numOfSwaps = 0;
 
 
-                if(numOfSwaps == 0){
-                    
-                    sorting = false;
+            for (int i = 0; i < myProductVector.size() - 1; i++) {
+
+                if (myProductVector[i].getPriceAsFloat() < myProductVector[i + 1].getPriceAsFloat()) {
+
+                    placeholder = myProductVector[i];
+                    myProductVector[i] = myProductVector[i + 1];
+                    myProductVector[i + 1] = placeholder;
+
+                    numOfSwaps++;
+
 
                 }
 
 
 
-                
-                
             }
-                    
 
-            
-            turnProductVectorIntoFile(myProductVector);
-            
 
-           
+            if (numOfSwaps == 0) {
+
+                sorting = false;
+
+            }
+
+
+
+
 
         }
 
 
 
-        //uses a bubble sorting algorythm to sort products by type in alphabetical order
-        const void sortByType(){
+        turnProductVectorIntoFile(myProductVector);
+        printAllProducts();
 
-        
+
+
+    }
+
+    //uses a bubble sorting algorythm to sort products by type in alphabetical order
+    const void sortByType() {
+
+
         vector<Product> myProductVector = turnFileIntoProductVector();
 
         bool sorting = true;
         int numOfSwaps;
         Product placeholder;
 
-        while(sorting){
+        while (sorting) {
 
-                numOfSwaps = 0;
-                
-
-                for(int i = 0; i < myProductVector.size()-1; i++){
-
-                    if (myProductVector[i].getType() > myProductVector[i+1].getType()){
-
-                        placeholder = myProductVector[i];
-                        myProductVector[i] = myProductVector[i+1];
-                        myProductVector[i+1] = placeholder;
-
-                        numOfSwaps++;
-
-                    
-                    }
-
-                    
-                            
-                }
+            numOfSwaps = 0;
 
 
-                if(numOfSwaps == 0){
-                    
-                    sorting = false;
+            for (int i = 0; i < myProductVector.size() - 1; i++) {
+
+                if (myProductVector[i].getType() > myProductVector[i + 1].getType()) {
+
+                    placeholder = myProductVector[i];
+                    myProductVector[i] = myProductVector[i + 1];
+                    myProductVector[i + 1] = placeholder;
+
+                    numOfSwaps++;
+
 
                 }
 
 
 
-                
-                
             }
-                    
 
-            
-            turnProductVectorIntoFile(myProductVector);
-            
 
-           
+            if (numOfSwaps == 0) {
+
+                sorting = false;
+
+            }
+
+
+
+
 
         }
 
 
 
-        const Database makeNewFileOfProductsWithTheSameType(string newfilename, string type){
+        turnProductVectorIntoFile(myProductVector);
+        printAllProducts();
+
+
+
+
+    }
+
+    // Search function to find a product by its item number - no data verification
+    Product searchByItemNum(const string& searchItemNum)
+    {
+        vector<Product> productVector = turnFileIntoProductVector();
+
+        for (const Product& product : productVector)
+        {
+            if (product.getItemNum() == searchItemNum)
+            {
+                return product;
+            }
+        }
+
+        // if no product is found return an empty Product or handle as needed
+        return Product();
+    }
+
+    // allows for the user to enter a product number  - has data verification
+    Product userSearchByItemNum()
+    {
+        int x = 0;
+
+        do {
+            cout << "Enter the item number: ";
+            cin >> x;
+
+            // Check if the input is not an integer or if it's less than or equal to 0
+            if (cin.fail() || x <= 0) {
+                cout << "Invalid data entered, try again.\n";
+                cin.clear(); // Clear error flags
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input
+            }
+
+        } while (x <= 0);
+        return searchByItemNum(std::to_string(x));
+    }
+
+    // Removes a product with the specified item number
+    const void removeProduct()
+    {
+        vector<Product> productVector = turnFileIntoProductVector();
+        string itemNum = intInput();
+        auto it = std::find_if(productVector.begin(), productVector.end(), [&itemNum](const Product& product)
+        {
+            return product.getItemNum() == itemNum;
+        });
+
+        if (it != productVector.end()) 
+        {
+            productVector.erase(it);
+            turnProductVectorIntoFile(productVector);
+        }
+        else 
+        {
+            cout << "Product not found." << endl;
+        }
+    }
+
+    void printAllProducts() 
+    {
+        vector<Product> productVector = turnFileIntoProductVector();
+
+        if (productVector.empty()) 
+        {
+            cout << "The database is empty." << endl;
+            return;
+        }
+
+        for (const Product& product : productVector) 
+        {
+            product.print();
+            cout << "----------------------" << endl; // Separator between products
+        }
+    }
+
+    void addNewProduct()
+    {
+        string type, itemNum, name, description, price;
+
+        while (true) {
+            // Ignore any leftover characters in the input buffer
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Enter item type (food, tech, nonfood, other): ";
+            getline(cin, type);
+
+            // Check if the input is one of the allowed types
+            if (type == "food" || type == "tech" || type == "nonfood" || type == "other") {
+                break; // Valid input, break out of the loop
+            }
+            else {
+                cout << "Invalid type entered. Please choose from food, tech, nonfood, or other." << endl;
+            }
+        }
+
+        itemNum = itemNumCreator();
+        // Ignore any leftover characters in the input buffer
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+
+        cout << "Enter item name: ";
+        getline(cin, name);
+
+        cout << "Enter item description: ";
+        getline(cin, description);
+
+        cout << "Enter price: ";
+        getline(cin, price);
+
+        Product newProduct(type, itemNum, name, description, price);
+        append(newProduct);
+
+        cout << "Product added successfully." << endl;
+    }
+
+    void editProductPrice() 
+    {
+        string itemNum, newPrice;
+        cout << "Enter the item number of the product to edit: ";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, itemNum);
+
+        // Find the product
+        vector<Product> products = turnFileIntoProductVector();
+        auto it = find_if(products.begin(), products.end(), [&itemNum](const Product& product) 
+            {
+              return product.getItemNum() == itemNum;
+            });
+
+       if (it != products.end()) 
+       {
+           it->print();
+           cout << endl;
+           
+           // Product found, prompt for new price and update
+            cout << "Enter new price: ";
+            getline(cin, newPrice);
+
+            it->setPrice(newPrice); // Update the price
+
+            // Save the updated product list
+            turnProductVectorIntoFile(products);
+            cout << "Price updated successfully." << endl;
+       }
+       else 
+       {
+           cout << "Product not found." << endl;
+       }
+    }
+    
+    void filepertype() {
+        string type, name;
+        while (true) { // only allows given types
+            cout << "Enter item type (food, tech, nonfood, other): ";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input
+            getline(cin, type);
+
+            if (type == "food" || type == "tech" || type == "nonfood" || type == "other") {
+                cout << "Enter the file name: ";
+                getline(cin, name); // Read the file name
+                makeNewFileOfProductsWithTheSameType(name, type);
+                break; // Exit the loop after the file is created
+            }
+            else {
+                cout << "Invalid type entered. Please choose from food, tech, nonfood, or other." << endl;
+            }
+        }
+    }
+
+    private: 
+        string fileName;
+        int numOfProducts;
+
+        const Database makeNewFileOfProductsWithTheSameType(string newfilename, string type) {
 
             vector<Product> myProductVector = turnFileIntoProductVector();
             vector<Product> vectorOfSameTypes = {};
-        
-            for(Product myProduct : myProductVector){
 
-                if(myProduct.getType() == type){
+            for (Product myProduct : myProductVector) {
+
+                if (myProduct.getType() == type) {
 
                     vectorOfSameTypes.push_back(myProduct);
 
                 }
-        
+
 
             }
 
@@ -393,21 +546,60 @@ class Database {
 
 
         }
-        
 
+        // takes in a number makes sure its a number returns it as a string
+        string intInput()
+        { 
+            int x;
+            do 
+            {
+                cout << "Enter the number: ";
+                cin >> x;
 
-    
+                // Check if the input is not an integer or if it's less than or equal to 0
+                if (cin.fail() || x <= 0) 
+                {
+                    cout << "Invalid data entered, try again.\n";
+                    cin.clear(); // Clear error flags
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input
+                }
 
+            } while (x <= 0);
+            return to_string(x);
+        }
 
+        // checks if a item with the same number exist in the data base
+        bool existingItemNum(const string& searchItemNum)
+        {
+            vector<Product> productVector = turnFileIntoProductVector();
 
-    private: 
-        string fileName;
-        int numOfProducts;
+            for (const Product& product : productVector)
+            {
+                if (product.getItemNum() == searchItemNum)
+                {
+                    return true;  // Item number exists
+                }
+            }
 
+            return false;  // Item number does not exist
+        }
 
+        // returns item number as a string makes sure it dosent exist
+        string itemNumCreator()
+        {
+            string itemNumber;
 
+            while (true)
+            {
+                itemNumber = intInput();
 
+                if (!existingItemNum(itemNumber)) 
+                {
+                    break;  // Exit loop if item number is unique
+                }
 
-
-
+                cout << "Item number already exists, please enter a different number." << endl;
+            }
+            return itemNumber;
+        }
 };
