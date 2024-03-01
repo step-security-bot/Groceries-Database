@@ -1,1 +1,1 @@
-[![OpenSSF Scorecard](htt‌ps://api.securityscorecards.dev/projects/github.com/Michael-Alvear-Pro-Coder/Groceries-Database/badge)](htt‌ps://securityscorecards.dev/viewer/?uri=github.com/Michael-Alvear-Pro-Coder/Groceries-Database)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Michael-Alvear-Pro-Coder/Groceries-Database/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Michael-Alvear-Pro-Coder/Groceries-Database)
